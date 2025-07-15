@@ -21,18 +21,18 @@ from tokenizer import TokenizerWrapper
 from engine_args import get_engine_args
 
 class vLLMEngine:
-    def __init__(self, engine = None):
-        load_dotenv() # For local development
+    def __init__(self, engine=None):
+        load_dotenv()  # For local development
         self.engine_args = get_engine_args()
-        # Patch RunPod env bug: force max_num_seqs to be int if string
-if isinstance(self.engine_args.max_num_seqs, str):
-    try:
-        self.engine_args.max_num_seqs = int(self.engine_args.max_num_seqs)
-        logging.info(f"Sanitized max_num_seqs: {self.engine_args.max_num_seqs}")
-    except ValueError:
-        logging.warning("max_num_seqs is a string but not an int. Check your env config.")
+        if isinstance(self.engine_args.max_num_seqs, str):
+            try:
+                self.engine_args.max_num_seqs = int(self.engine_args.max_num_seqs)
+                logging.info(f"Sanitized max_num_seqs: {self.engine_args.max_num_seqs}")
+            except ValueError:
+                logging.warning("max_num_seqs is a string but not an int. Check your env config.")
 
         logging.info(f"Engine args: {self.engine_args}")
+
         
         # Initialize vLLM engine first
         self.llm = self._initialize_llm() if engine is None else engine.llm
